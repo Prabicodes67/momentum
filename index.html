@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,11 +7,13 @@
   <meta name="theme-color" content="#f7f8fa" />
   <meta name="description" content="A quiet, minimal weekly routine for classes, independent learning, research and life." />
   <title>Momentum — My Weekly Routine</title>
+
   <style>
     :root {
       color-scheme: light;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
       font-synthesis: none;
+
       --bg: #f7f8fa;
       --card: #ffffff;
       --ink: #1b222c;
@@ -24,148 +27,600 @@
       --amber: #a97938;
       --sport: #468d6a;
       --personal: #8793a3;
-      --shadow: 0 12px 36px rgba(31, 47, 72, .035), 0 1px 3px rgba(31, 47, 72, .025);
+      --shadow: 0 12px 36px rgba(31, 47, 72, .035),
+                0 1px 3px rgba(31, 47, 72, .025);
     }
-    * { box-sizing: border-box; }
-    [hidden] { display: none !important; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body { margin: 0; background: var(--bg); color: var(--ink); min-width: 320px; }
-    button { font: inherit; cursor: pointer; }
-    button:focus-visible { outline: 3px solid #8bb1ed; outline-offset: 3px; }
-    .container { width: min(1090px, calc(100% - 48px)); margin: 0 auto; }
-    .days-section { padding: 28px 0 27px; }
-    .daystrip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:9px; }
-    .day { position:relative; background:#fff; border:1px solid var(--line); border-radius:16px; padding:15px 8px 14px; text-align:center; transition: border-color .16s, box-shadow .16s, transform .16s; min-height:83px; }
-    .day:hover { border-color:#b8c8db; transform:translateY(-1px); }
-    .day[aria-pressed="true"] { border-color:#94aac7; background:#f7faff; box-shadow: 0 0 0 1px rgba(96,135,182,.09) inset; }
-    .day-name { display:block; font-size:13px; font-weight:680; color:#3d4857; }
-    .day-sub { display:block; font-size:11px; color:var(--subtle); margin-top:7px; font-variant-numeric:tabular-nums; }
-    .today-dot { position:absolute; top:8px; right:9px; height:5px; width:5px; border-radius:50%; background:#6288b5; }
-    .content { display:grid; grid-template-columns: minmax(0, 1.65fr) minmax(250px, .85fr); gap:23px; align-items:start; padding-bottom: 74px; }
-    .main-col { min-width:0; }
-    .focus-card { background:#fff; padding:27px 29px 25px; border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); margin-bottom:20px; }
-    .section-kicker { font-size:10px; text-transform:uppercase; letter-spacing:.15em; color:var(--blue); font-weight:790; }
-    .focus-name { font-size:clamp(22px,3vw,30px); letter-spacing:-.047em; font-weight:710; margin:9px 0 7px; line-height:1.18; }
-    .focus-time { color:var(--muted); font-size:13px; font-variant-numeric:tabular-nums; }
-    .focus-footer { margin-top:22px; padding-top:17px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .next-label { text-transform:uppercase; font-size:10px; letter-spacing:.1em; color:var(--subtle); font-weight:770; }
-    .next-text { margin-top:4px; color:#485464; font-size:12px; line-height:1.45; }
-    .live-indicator { flex-shrink:0; display:flex; align-items:center; gap:6px; color:var(--green); font-size:11px; font-weight:750; }
-    .live-indicator::before { content:""; width:6px; height:6px; background: currentColor; border-radius:50%; }
-    .schedule { background:#fff; border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); overflow:hidden; }
-    .schedule-top { display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:25px 27px 17px; }
-    h2 { margin:0; font-size:19px; font-weight:710; letter-spacing:-.035em; }
-    .count { font-size:11px; color:var(--subtle); }
-    .events { padding:0 16px 14px; }
-    .event { display:grid; grid-template-columns: 112px 12px minmax(0,1fr); gap:12px; align-items:center; min-height:66px; padding:10px 10px; border-radius:12px; position:relative; }
-    .event + .event { border-top:1px solid #f1f2f4; border-top-left-radius:0; border-top-right-radius:0; }
-    .event.is-current { background:#f1f6fd; border-top-color:transparent; border-radius:12px; }
-    .event.is-current + .event { border-top-color:transparent; }
-    .time { font-size:11px; color:#8290a0; font-weight:600; font-variant-numeric:tabular-nums; line-height:1.6; white-space:nowrap; }
-    .line { width:3px; align-self:stretch; min-height:25px; max-height:35px; justify-self:center; border-radius:4px; background:#d3dbe4; }
-    .type-learning .line { background:var(--purple); }
-    .type-class .line { background:var(--blue); }
-    .type-research .line { background:var(--green); }
-    .type-homework .line { background:var(--amber); }
-    .type-soccer .line { background:var(--sport); }
-    .event-title { font-size:13px; line-height:1.38; letter-spacing:-.01em; font-weight:590; }
-    .event-note { display:block; font-size:11px; color:var(--subtle); margin-top:3px; line-height:1.35; }
-    .event.is-current .event-title { color:#264e85; }
-    .aside { position:sticky; top:22px; display:grid; gap:16px; }
-    .sidebar-card { background:#fff; border:1px solid var(--line); border-radius:21px; padding:24px; box-shadow:var(--shadow); }
-    .side-head { margin:0 0 23px; font-size:14px; font-weight:720; letter-spacing:-.025em; }
-    .metric { margin-bottom:21px; }
-    .metric:last-of-type { margin-bottom:0; }
-    .metric-head { display:flex; justify-content:space-between; align-items:baseline; gap:10px; font-size:12px; }
-    .metric-head span:first-child { color:#657181; }
-    .metric-head strong { font-size:13px; color:#2e3c4d; font-weight:710; font-variant-numeric:tabular-nums; }
-    .bar { height:5px; border-radius:10px; background:#eff1f4; overflow:hidden; margin-top:9px; }
-    .fill { height:100%; border-radius:10px; transition:width .2s ease; }
-    .learning-fill { background:#9a88c2; }
-    .research-fill { background:#72a99a; }
-    .homework-fill { background:#c8ac7f; }
-    .quick-note { margin-top:20px; padding-top:18px; border-top:1px solid var(--line); color:#788494; font-size:11px; line-height:1.6; }
-    @media (max-width:800px) {
-      .container { width:min(670px,calc(100% - 36px)); }
-      .daystrip { gap:6px; }
-      .day { min-height:74px; padding:13px 4px; border-radius:13px; }
-      .day-sub { font-size:10px; }
-      .content { grid-template-columns:1fr; gap:16px; }
-      .aside { display:none; }
-      .sidebar-card { padding:21px 23px; }
-      .sidebar-card.metrics-card { display:none; }
-      .focus-card { margin-bottom:16px; }
+
+    * {
+      box-sizing: border-box;
     }
-    @media (max-width:460px) {
-      .container { width:calc(100% - 28px); }
-      .days-section { padding:12px 0 20px; }
-      .daystrip { gap:5px; }
-      .day { min-height:66px; padding:12px 1px 10px; border-radius:12px; }
-      .day-name { font-size:12px; }
-      .day-sub { font-size:9px; margin-top:5px; }
-      .today-dot { width:4px; height:4px; right:5px; top:5px; }
-      .focus-card { border-radius:19px; padding:23px 21px 21px; }
-      .schedule { border-radius:19px; }
-      .schedule-top { padding:22px 18px 12px; }
-      .events { padding:0 7px 10px; }
-      .event { grid-template-columns:84px 8px minmax(0,1fr); gap:9px; padding:10px 8px; min-height:65px; }
-      .time { font-size:10px; letter-spacing:-.04em; }
-      .event-title { font-size:12px; }
-      .event-note { font-size:10px; }
-      .sidebar-card { padding:20px; }
+
+    [hidden] {
+      display: none !important;
     }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      min-width: 320px;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #8bb1ed;
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(1090px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* Day selector */
+
+    .days-section {
+      padding: 28px 0 27px;
+    }
+
+    .daystrip {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .day {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 15px 8px;
+      text-align: center;
+      transition:
+        border-color .16s,
+        box-shadow .16s,
+        transform .16s;
+      min-height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .day:hover {
+      border-color: #b8c8db;
+      transform: translateY(-1px);
+    }
+
+    .day[aria-pressed="true"] {
+      border-color: #94aac7;
+      background: #f7faff;
+      box-shadow: 0 0 0 1px rgba(96, 135, 182, .09) inset;
+    }
+
+    .day-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 680;
+      color: #3d4857;
+    }
+
+    .today-dot {
+      position: absolute;
+      top: 8px;
+      right: 9px;
+      height: 5px;
+      width: 5px;
+      border-radius: 50%;
+      background: #6288b5;
+    }
+
+    /* Main layout */
+
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(250px, .85fr);
+      gap: 23px;
+      align-items: start;
+      padding-bottom: 74px;
+    }
+
+    .main-col {
+      min-width: 0;
+    }
+
+    /* Current activity */
+
+    .focus-card {
+      background: #fff;
+      padding: 27px 29px 25px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .section-kicker {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: var(--blue);
+      font-weight: 790;
+    }
+
+    .focus-name {
+      font-size: clamp(22px, 3vw, 30px);
+      letter-spacing: -.047em;
+      font-weight: 710;
+      margin: 9px 0 7px;
+      line-height: 1.18;
+    }
+
+    .focus-time {
+      color: var(--muted);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .focus-footer {
+      margin-top: 22px;
+      padding-top: 17px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .next-label {
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: .1em;
+      color: var(--subtle);
+      font-weight: 770;
+    }
+
+    .next-text {
+      margin-top: 4px;
+      color: #485464;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .live-indicator {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .live-indicator::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: currentColor;
+      border-radius: 50%;
+    }
+
+    /* Schedule */
+
+    .schedule {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .schedule-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      padding: 25px 27px 17px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 710;
+      letter-spacing: -.035em;
+    }
+
+    .count {
+      font-size: 11px;
+      color: var(--subtle);
+    }
+
+    .events {
+      padding: 0 16px 14px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 112px 12px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 66px;
+      padding: 10px;
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .event + .event {
+      border-top: 1px solid #f1f2f4;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .event.is-current {
+      background: #f1f6fd;
+      border-top-color: transparent;
+      border-radius: 12px;
+    }
+
+    .event.is-current + .event {
+      border-top-color: transparent;
+    }
+
+    .time {
+      font-size: 11px;
+      color: #8290a0;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+
+    .line {
+      width: 3px;
+      align-self: stretch;
+      min-height: 25px;
+      max-height: 35px;
+      justify-self: center;
+      border-radius: 4px;
+      background: #d3dbe4;
+    }
+
+    .type-learning .line {
+      background: var(--purple);
+    }
+
+    .type-class .line {
+      background: var(--blue);
+    }
+
+    .type-research .line {
+      background: var(--green);
+    }
+
+    .type-homework .line {
+      background: var(--amber);
+    }
+
+    .type-soccer .line {
+      background: var(--sport);
+    }
+
+    .event-title {
+      font-size: 13px;
+      line-height: 1.38;
+      letter-spacing: -.01em;
+      font-weight: 590;
+    }
+
+    .event-note {
+      display: block;
+      font-size: 11px;
+      color: var(--subtle);
+      margin-top: 3px;
+      line-height: 1.35;
+    }
+
+    .event.is-current .event-title {
+      color: #264e85;
+    }
+
+    /* Sidebar */
+
+    .aside {
+      position: sticky;
+      top: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 21px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .side-head {
+      margin: 0 0 23px;
+      font-size: 14px;
+      font-weight: 720;
+      letter-spacing: -.025em;
+    }
+
+    .metric {
+      margin-bottom: 21px;
+    }
+
+    .metric:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .metric-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .metric-head span:first-child {
+      color: #657181;
+    }
+
+    .metric-head strong {
+      font-size: 13px;
+      color: #2e3c4d;
+      font-weight: 710;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar {
+      height: 5px;
+      border-radius: 10px;
+      background: #eff1f4;
+      overflow: hidden;
+      margin-top: 9px;
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width .2s ease;
+    }
+
+    .learning-fill {
+      background: #9a88c2;
+    }
+
+    .research-fill {
+      background: #72a99a;
+    }
+
+    .homework-fill {
+      background: #c8ac7f;
+    }
+
+    /* Responsive design */
+
+    @media (max-width: 800px) {
+      .container {
+        width: min(670px, calc(100% - 36px));
+      }
+
+      .daystrip {
+        gap: 6px;
+      }
+
+      .day {
+        min-height: 60px;
+        padding: 13px 4px;
+        border-radius: 13px;
+      }
+
+      .content {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .aside {
+        display: none;
+      }
+
+      .focus-card {
+        margin-bottom: 16px;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .container {
+        width: calc(100% - 28px);
+      }
+
+      .days-section {
+        padding: 12px 0 20px;
+      }
+
+      .daystrip {
+        gap: 5px;
+      }
+
+      .day {
+        min-height: 55px;
+        padding: 12px 1px;
+        border-radius: 12px;
+      }
+
+      .day-name {
+        font-size: 12px;
+      }
+
+      .today-dot {
+        width: 4px;
+        height: 4px;
+        right: 5px;
+        top: 5px;
+      }
+
+      .focus-card {
+        border-radius: 19px;
+        padding: 23px 21px 21px;
+      }
+
+      .schedule {
+        border-radius: 19px;
+      }
+
+      .schedule-top {
+        padding: 22px 18px 12px;
+      }
+
+      .events {
+        padding: 0 7px 10px;
+      }
+
+      .event {
+        grid-template-columns: 84px 8px minmax(0, 1fr);
+        gap: 9px;
+        padding: 10px 8px;
+        min-height: 65px;
+      }
+
+      .time {
+        font-size: 10px;
+        letter-spacing: -.04em;
+      }
+
+      .event-title {
+        font-size: 12px;
+      }
+
+      .event-note {
+        font-size: 10px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; }
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <main id="top">
 
+      <!-- Weekday navigation -->
       <section class="days-section" aria-label="Select day of the week">
         <nav class="daystrip" id="dayStrip"></nav>
       </section>
 
       <div class="content">
         <div class="main-col">
+
+          <!-- Current activity -->
           <section class="focus-card" aria-label="Current or featured activity">
             <div class="section-kicker" id="focusLabel">Right now</div>
             <h2 class="focus-name" id="focusName">—</h2>
             <div class="focus-time" id="focusTime">—</div>
+
             <div class="focus-footer">
               <div>
                 <div class="next-label" id="nextLabel">Up next</div>
                 <div class="next-text" id="nextText">—</div>
               </div>
-              <span class="live-indicator" id="liveTag" hidden>Live</span>
+
+              <span class="live-indicator" id="liveTag" hidden>
+                Live
+              </span>
             </div>
           </section>
+
+          <!-- Daily schedule -->
           <section class="schedule" aria-label="Schedule for selected day">
-            <div class="schedule-top"><h2 id="scheduleHeading">Today's schedule</h2><span class="count" id="scheduleCount"></span></div>
+            <div class="schedule-top">
+              <h2 id="scheduleHeading">Today's schedule</h2>
+              <span class="count" id="scheduleCount"></span>
+            </div>
+
             <div class="events" id="events"></div>
           </section>
+
         </div>
+
+        <!-- Desktop overview -->
         <aside class="aside" aria-label="Schedule overview">
           <section class="sidebar-card metrics-card">
             <h2 class="side-head">Your time, intentionally</h2>
-            <div class="metric"><div class="metric-head"><span>Independent learning</span><strong id="learningTotal">4h</strong></div><div class="bar"><div class="fill learning-fill" id="learningBar"></div></div></div>
-            <div class="metric"><div class="metric-head"><span>Research</span><strong id="researchTotal">0h</strong></div><div class="bar"><div class="fill research-fill" id="researchBar"></div></div></div>
-            <div class="metric"><div class="metric-head"><span>Homework</span><strong id="homeworkTotal">1h</strong></div><div class="bar"><div class="fill homework-fill" id="homeworkBar"></div></div></div>
-            <div class="quick-note">Every day has at least 4 hours for DSA, PyTorch, or deep learning mathematics—separate from research and classes. Homework stays at 1 hour or less.</div>
+
+            <div class="metric">
+              <div class="metric-head">
+                <span>Independent learning</span>
+                <strong id="learningTotal">4h</strong>
+              </div>
+              <div class="bar">
+                <div class="fill learning-fill" id="learningBar"></div>
+              </div>
+            </div>
+
+            <div class="metric">
+              <div class="metric-head">
+                <span>Research</span>
+                <strong id="researchTotal">0h</strong>
+              </div>
+              <div class="bar">
+                <div class="fill research-fill" id="researchBar"></div>
+              </div>
+            </div>
+
+            <div class="metric">
+              <div class="metric-head">
+                <span>Homework</span>
+                <strong id="homeworkTotal">1h</strong>
+              </div>
+              <div class="bar">
+                <div class="fill homework-fill" id="homeworkBar"></div>
+              </div>
+            </div>
           </section>
         </aside>
       </div>
+
     </main>
   </div>
+
   <script>
     "use strict";
-    // Edit the schedule here. Days are Monday (0) through Sunday (6).
-    // Each item is [start in 24h, end in 24h, title, category, optional note].
-    // Sleep ends the next morning, represented by an end time earlier than the start.
-    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    // Days are Monday (0) through Sunday (6).
+    // Each schedule item is:
+    // [start, end, title, category, optional note]
+
+    const days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ];
+
     const schedule = [
-      // MONDAY — 4 hours independent learning, 1 hour homework, 1 hour research
+
+      // MONDAY
       [
         ["07:30","08:00","Wake up & get ready","personal"],
         ["08:00","08:30","Breakfast","personal"],
@@ -184,7 +639,8 @@
         ["22:15","23:30","Wind down & night routine","personal"],
         ["23:30","07:30","Sleep","sleep","Until Tuesday morning"]
       ],
-      // TUESDAY — 4 hours independent learning, 30 minutes homework, soccer
+
+      // TUESDAY
       [
         ["07:30","07:50","Wake up & get ready","personal"],
         ["07:50","08:10","Breakfast","personal"],
@@ -204,7 +660,8 @@
         ["22:30","23:30","Night routine","personal"],
         ["23:30","07:30","Sleep","sleep","Until Wednesday morning"]
       ],
-      // WEDNESDAY — 4 hours independent learning, 1 hour homework
+
+      // WEDNESDAY
       [
         ["07:30","08:00","Wake up & get ready","personal"],
         ["08:00","08:30","Breakfast","personal"],
@@ -223,7 +680,8 @@
         ["22:30","23:30","Night routine","personal"],
         ["23:30","07:30","Sleep","sleep","Until Thursday morning"]
       ],
-      // THURSDAY — 4 hours independent learning, 1 hour homework, ~2 hours research
+
+      // THURSDAY
       [
         ["07:30","08:00","Wake up & get ready","personal"],
         ["08:00","08:30","Breakfast","personal"],
@@ -240,7 +698,8 @@
         ["22:00","23:30","Night routine & unwind","personal"],
         ["23:30","07:30","Sleep","sleep","Until Friday morning"]
       ],
-      // FRIDAY — 4 hours independent learning, 30 minutes homework, soccer
+
+      // FRIDAY
       [
         ["07:30","08:00","Wake up & get ready","personal"],
         ["08:00","08:30","Breakfast","personal"],
@@ -258,7 +717,8 @@
         ["22:15","23:30","Free time & night routine","personal"],
         ["23:30","08:00","Sleep","sleep","Until Saturday morning"]
       ],
-      // SATURDAY — 4 hours independent learning, 1 hour homework, 2 hours research
+
+      // SATURDAY
       [
         ["08:00","08:30","Wake up & get ready","personal"],
         ["08:30","09:00","Breakfast","personal"],
@@ -274,7 +734,8 @@
         ["22:30","23:30","Night routine","personal"],
         ["23:30","08:30","Sleep","sleep","Until Sunday morning"]
       ],
-      // SUNDAY — 4 hours independent learning, 1 hour homework, 2 hours research
+
+      // SUNDAY
       [
         ["08:30","09:00","Wake up & get ready","personal"],
         ["09:00","09:30","Breakfast","personal"],
@@ -292,125 +753,331 @@
       ]
     ];
 
+    // Time helpers
+
     const zone = "America/New_York";
-    const weekDayIndex = {Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
+
+    const weekDayIndex = {
+      Mon: 0,
+      Tue: 1,
+      Wed: 2,
+      Thu: 3,
+      Fri: 4,
+      Sat: 5,
+      Sun: 6
+    };
+
     const dayStrip = document.getElementById("dayStrip");
     const events = document.getElementById("events");
+
     const focusLabel = document.getElementById("focusLabel");
     const focusName = document.getElementById("focusName");
     const focusTime = document.getElementById("focusTime");
+
     const nextLabel = document.getElementById("nextLabel");
     const nextText = document.getElementById("nextText");
     const liveTag = document.getElementById("liveTag");
+
     const scheduleHeading = document.getElementById("scheduleHeading");
     const scheduleCount = document.getElementById("scheduleCount");
-    const timeMinutes = value => { const [h,m] = value.split(":").map(Number); return h*60 + m; };
-    const toClock = value => {
-      const [h,m] = value.split(":").map(Number);
-      const hour = h%12 || 12;
-      return `${hour}:${String(m).padStart(2,"0")} ${h>=12?"PM":"AM"}`;
+
+    const timeMinutes = value => {
+      const [h, m] = value.split(":").map(Number);
+      return h * 60 + m;
     };
-    const timeRange = item => `${toClock(item[0])} – ${toClock(item[1])}`;
+
+    const toClock = value => {
+      const [h, m] = value.split(":").map(Number);
+      const hour = h % 12 || 12;
+
+      return `${hour}:${String(m).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;
+    };
+
+    const timeRange = item => {
+      return `${toClock(item[0])} – ${toClock(item[1])}`;
+    };
+
     const duration = item => {
       const start = timeMinutes(item[0]);
       let end = timeMinutes(item[1]);
-      if (end <= start) end += 1440;
+
+      if (end <= start) {
+        end += 1440;
+      }
+
       return end - start;
     };
+
     const hoursLabel = minutes => {
-      const hours = Math.floor(minutes/60); const mins = minutes%60;
-      return [hours?`${hours}h`:"",mins?`${mins}m`:""].filter(Boolean).join(" ") || "0m";
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+
+      return [
+        hours ? `${hours}h` : "",
+        mins ? `${mins}m` : ""
+      ].filter(Boolean).join(" ") || "0m";
     };
+
     function nowNY() {
-      const parts = new Intl.DateTimeFormat("en-US", { timeZone:zone, weekday:"short", hour:"2-digit", minute:"2-digit", hourCycle:"h23" }).formatToParts(new Date());
-      const data = Object.fromEntries(parts.map(part=>[part.type,part.value]));
-      return { day:weekDayIndex[data.weekday], minutes:Number(data.hour)*60+Number(data.minute) };
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: zone,
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h23"
+      }).formatToParts(new Date());
+
+      const data = Object.fromEntries(
+        parts.map(part => [part.type, part.value])
+      );
+
+      return {
+        day: weekDayIndex[data.weekday],
+        minutes: Number(data.hour) * 60 + Number(data.minute)
+      };
     }
-    function getCurrent(day,minutes) {
-      const current = schedule[day].find(item=>timeMinutes(item[0])<=minutes && minutes<timeMinutes(item[0])+duration(item) );
-      if (current) return current;
-      // Before waking, the previous day's sleep is still active.
-      const previous = schedule[(day+6)%7].at(-1);
-      if (previous && previous[3]==="sleep" && minutes<timeMinutes(previous[1])) return previous;
+
+    function getCurrent(day, minutes) {
+      const current = schedule[day].find(item => {
+        const start = timeMinutes(item[0]);
+        return start <= minutes && minutes < start + duration(item);
+      });
+
+      if (current) {
+        return current;
+      }
+
+      // Handle sleep continuing after midnight.
+
+      const previous = schedule[(day + 6) % 7].at(-1);
+
+      if (
+        previous &&
+        previous[3] === "sleep" &&
+        minutes < timeMinutes(previous[1])
+      ) {
+        return previous;
+      }
+
       return null;
     }
-    function getNext(day,minutes) { return schedule[day].find(item=>timeMinutes(item[0])>minutes) || null; }
+
+    function getNext(day, minutes) {
+      return schedule[day].find(
+        item => timeMinutes(item[0]) > minutes
+      ) || null;
+    }
+
     let selectedDay = nowNY().day;
     let followToday = true;
+
+    // Render weekday buttons.
+    // No learning-hour text is displayed under the day names.
+
     function renderTabs() {
       const today = nowNY().day;
+
       dayStrip.replaceChildren();
-      schedule.forEach((dayItems,index) => {
-        const learning = dayItems.filter(x=>x[3]==="learning").reduce((sum,x)=>sum+duration(x),0);
+
+      schedule.forEach((dayItems, index) => {
         const button = document.createElement("button");
+
         button.type = "button";
         button.className = "day";
-        button.setAttribute("aria-pressed",String(selectedDay===index));
-        button.setAttribute("aria-label",days[index] + ", " + hoursLabel(learning) + " independent learning");
-        const name = document.createElement("span"); name.className="day-name"; name.textContent=days[index].slice(0,3);
-        const sub = document.createElement("span"); sub.className="day-sub"; sub.textContent=hoursLabel(learning);
-        button.append(name,sub);
-        if (index===today) { const dot=document.createElement("span"); dot.className="today-dot"; dot.setAttribute("aria-hidden","true"); button.append(dot); }
-        button.addEventListener("click",()=>{selectedDay=index;followToday=(index===nowNY().day);render();});
+
+        button.setAttribute(
+          "aria-pressed",
+          String(selectedDay === index)
+        );
+
+        button.setAttribute(
+          "aria-label",
+          days[index]
+        );
+
+        const name = document.createElement("span");
+        name.className = "day-name";
+        name.textContent = days[index].slice(0, 3);
+
+        button.append(name);
+
+        if (index === today) {
+          const dot = document.createElement("span");
+
+          dot.className = "today-dot";
+          dot.setAttribute("aria-hidden", "true");
+
+          button.append(dot);
+        }
+
+        button.addEventListener("click", () => {
+          selectedDay = index;
+          followToday = index === nowNY().day;
+          render();
+        });
+
         dayStrip.append(button);
       });
     }
+
+    // Update sidebar statistics.
+
     function renderOverview() {
-      for (const [key,label] of [["learning","learning"],["research","research"],["homework","homework"]]) {
-        const minutes = schedule[selectedDay].filter(x=>x[3]===key).reduce((sum,x)=>sum+duration(x),0);
-        document.getElementById(`${key}Total`).textContent = hoursLabel(minutes);
-        document.getElementById(`${key}Bar`).style.width = `${Math.min(100,100*minutes/(key==="learning"?300:key==="research"?180:60))}%`;
+      for (const key of ["learning", "research", "homework"]) {
+        const minutes = schedule[selectedDay]
+          .filter(item => item[3] === key)
+          .reduce((sum, item) => sum + duration(item), 0);
+
+        document.getElementById(`${key}Total`).textContent =
+          hoursLabel(minutes);
+
+        const maximum =
+          key === "learning" ? 300 :
+          key === "research" ? 180 : 60;
+
+        document.getElementById(`${key}Bar`).style.width =
+          `${Math.min(100, 100 * minutes / maximum)}%`;
       }
     }
+
+    // Render the selected day's activities.
+
     function renderEvents() {
-      const {day:today,minutes} = nowNY();
-      const isToday = today===selectedDay;
-      const current = isToday?getCurrent(today,minutes):null;
+      const { day: today, minutes } = nowNY();
+      const isToday = today === selectedDay;
+
+      const current = isToday
+        ? getCurrent(today, minutes)
+        : null;
+
       events.replaceChildren();
-      for(const item of schedule[selectedDay]) {
+
+      for (const item of schedule[selectedDay]) {
         const row = document.createElement("div");
-        row.className = `event type-${item[3]}` + (item===current?" is-current":"");
-        const time=document.createElement("div"); time.className="time"; time.textContent=timeRange(item);
-        const line=document.createElement("div"); line.className="line"; line.setAttribute("aria-hidden","true");
-        const details=document.createElement("div");
-        const title=document.createElement("div"); title.className="event-title"; title.textContent=item[2]; details.append(title);
-        if(item[4]) {const note=document.createElement("span"); note.className="event-note"; note.textContent=item[4]; details.append(note);}
-        row.append(time,line,details); events.append(row);
+
+        row.className =
+          `event type-${item[3]}` +
+          (item === current ? " is-current" : "");
+
+        const time = document.createElement("div");
+        time.className = "time";
+        time.textContent = timeRange(item);
+
+        const line = document.createElement("div");
+        line.className = "line";
+        line.setAttribute("aria-hidden", "true");
+
+        const details = document.createElement("div");
+
+        const title = document.createElement("div");
+        title.className = "event-title";
+        title.textContent = item[2];
+
+        details.append(title);
+
+        if (item[4]) {
+          const note = document.createElement("span");
+          note.className = "event-note";
+          note.textContent = item[4];
+
+          details.append(note);
+        }
+
+        row.append(time, line, details);
+        events.append(row);
       }
-      scheduleHeading.textContent = isToday?"Today's schedule":`${days[selectedDay]}'s schedule`;
-      const count = schedule[selectedDay].filter(x=>x[3]==="class").length;
-      scheduleCount.textContent = count?`${count} classes`:"No classes";
+
+      scheduleHeading.textContent = isToday
+        ? "Today's schedule"
+        : `${days[selectedDay]}'s schedule`;
+
+      const count = schedule[selectedDay]
+        .filter(item => item[3] === "class")
+        .length;
+
+      scheduleCount.textContent = count
+        ? `${count} classes`
+        : "No classes";
     }
+
+    // Render current and next activities.
+
     function renderFocus() {
-      const {day:today,minutes} = nowNY();
-      const isToday=today===selectedDay;
-      const current=isToday?getCurrent(today,minutes):null;
-      const upcoming=isToday?getNext(today,minutes):schedule[selectedDay][0];
-      liveTag.hidden=!current;
-      if(!isToday) {
-        const first=schedule[selectedDay][0];
-        focusLabel.textContent=`${days[selectedDay]} · first up`;
-        focusName.textContent=first[2]; focusTime.textContent=timeRange(first);
-        nextLabel.textContent="Later";
-        nextText.textContent=schedule[selectedDay][1] ? `${schedule[selectedDay][1][2]} · ${toClock(schedule[selectedDay][1][0])}` : "Nothing else planned";
+      const { day: today, minutes } = nowNY();
+
+      const isToday = today === selectedDay;
+
+      const current = isToday
+        ? getCurrent(today, minutes)
+        : null;
+
+      const upcoming = isToday
+        ? getNext(today, minutes)
+        : schedule[selectedDay][0];
+
+      liveTag.hidden = !current;
+
+      if (!isToday) {
+        const first = schedule[selectedDay][0];
+
+        focusLabel.textContent = `${days[selectedDay]} · first up`;
+        focusName.textContent = first[2];
+        focusTime.textContent = timeRange(first);
+
+        nextLabel.textContent = "Later";
+
+        nextText.textContent = schedule[selectedDay][1]
+          ? `${schedule[selectedDay][1][2]} · ${toClock(schedule[selectedDay][1][0])}`
+          : "Nothing else planned";
+
         return;
       }
-      if(current){
-        focusLabel.textContent="Right now";
-        focusName.textContent=current[2]; focusTime.textContent=timeRange(current);
-      }else{
-        focusLabel.textContent="Right now";
-        focusName.textContent="A little free time";
-        focusTime.textContent="Nothing scheduled at the moment";
+
+      if (current) {
+        focusLabel.textContent = "Right now";
+        focusName.textContent = current[2];
+        focusTime.textContent = timeRange(current);
+      } else {
+        focusLabel.textContent = "Right now";
+        focusName.textContent = "A little free time";
+        focusTime.textContent = "Nothing scheduled at the moment";
       }
-      nextLabel.textContent="Up next";
-      nextText.textContent=upcoming?`${upcoming[2]} · ${toClock(upcoming[0])}`:"Rest up — your day is complete";
+
+      nextLabel.textContent = "Up next";
+
+      nextText.textContent = upcoming
+        ? `${upcoming[2]} · ${toClock(upcoming[0])}`
+        : "Rest up — your day is complete";
     }
-    function render() {renderTabs();renderFocus();renderEvents();renderOverview();}
+
+    // Render application.
+
+    function render() {
+      renderTabs();
+      renderFocus();
+      renderEvents();
+      renderOverview();
+    }
+
     render();
-    // One update per minute is enough for a schedule. No animation loop or heavy polling.
-    setInterval(()=>{if(followToday) selectedDay=nowNY().day; renderTabs();renderFocus();renderEvents();renderOverview();},60_000);
-    document.addEventListener("visibilitychange",()=>{if(!document.hidden) render();});
+
+    // Refresh once per minute.
+
+    setInterval(() => {
+      if (followToday) {
+        selectedDay = nowNY().day;
+      }
+
+      render();
+    }, 60000);
+
+    // Refresh when returning to the browser tab.
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        render();
+      }
+    });
   </script>
 </body>
 </html>
